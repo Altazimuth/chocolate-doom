@@ -1,4 +1,4 @@
-// Emacs style mode select   -*- C++ -*-
+// Emacs style mode select   -*- C++ -*- 
 //-----------------------------------------------------------------------------
 //
 // Copyright(C) 2005,2006 Simon Howard
@@ -27,7 +27,7 @@
 #ifndef TXT_MAIN_H
 #define TXT_MAIN_H
 
-// For the moment, txt_sdl.c is the only implementation of the base
+// For the moment, txt_sdl.c is the only implementation of the base 
 // text mode screen API:
 
 #include "txt_sdl.h"
@@ -49,22 +49,22 @@
 
 typedef enum
 {
-	TXT_COLOR_BLACK,
-	TXT_COLOR_BLUE,
-	TXT_COLOR_GREEN,
-	TXT_COLOR_CYAN,
-	TXT_COLOR_RED,
-	TXT_COLOR_MAGENTA,
-	TXT_COLOR_BROWN,
-	TXT_COLOR_GREY,
-	TXT_COLOR_DARK_GREY,
-	TXT_COLOR_BRIGHT_BLUE,
-	TXT_COLOR_BRIGHT_GREEN,
-	TXT_COLOR_BRIGHT_CYAN,
-	TXT_COLOR_BRIGHT_RED,
-	TXT_COLOR_BRIGHT_MAGENTA,
-	TXT_COLOR_YELLOW,
-	TXT_COLOR_BRIGHT_WHITE,
+    TXT_COLOR_BLACK,
+    TXT_COLOR_BLUE,
+    TXT_COLOR_GREEN,
+    TXT_COLOR_CYAN,
+    TXT_COLOR_RED,
+    TXT_COLOR_MAGENTA,
+    TXT_COLOR_BROWN,
+    TXT_COLOR_GREY,
+    TXT_COLOR_DARK_GREY,
+    TXT_COLOR_BRIGHT_BLUE,
+    TXT_COLOR_BRIGHT_GREEN,
+    TXT_COLOR_BRIGHT_CYAN,
+    TXT_COLOR_BRIGHT_RED,
+    TXT_COLOR_BRIGHT_MAGENTA,
+    TXT_COLOR_YELLOW,
+    TXT_COLOR_BRIGHT_WHITE,
 } txt_color_t;
 
 // Initialize the screen
@@ -78,7 +78,7 @@ void TXT_Shutdown(void);
 
 // Get a pointer to the buffer containing the raw screen data.
 
-unsigned char* TXT_GetScreenData(void);
+unsigned char *TXT_GetScreenData(void);
 
 // Update an area of the screen
 
@@ -92,14 +92,14 @@ void TXT_UpdateScreen(void);
 
 int TXT_GetChar(void);
 
-// Provides a short description of a key code, placing into the
+// Provides a short description of a key code, placing into the 
 // provided buffer.
 
-void TXT_GetKeyDescription(int key, char* buf);
+void TXT_GetKeyDescription(int key, char *buf);
 
 // Retrieve the current position of the mouse
 
-void TXT_GetMousePosition(int* x, int* y);
+void TXT_GetMousePosition(int *x, int *y);
 
 // Sleep until an event is received or the screen needs updating
 // Optional timeout in ms (timeout == 0 : sleep forever)
@@ -113,6 +113,7 @@ void TXT_EnableKeyMapping(int enable);
 
 // Set the window title of the window containing the text mode screen
 
-void TXT_SetWindowTitle(char* title);
+void TXT_SetWindowTitle(char *title);
 
-#endif							/* #ifndef TXT_MAIN_H */
+#endif /* #ifndef TXT_MAIN_H */
+

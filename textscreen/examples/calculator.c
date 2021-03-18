@@ -28,7 +28,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-
 #include "textscreen.h"
 
 typedef enum
@@ -168,18 +167,6 @@ void BuildGUI()
     TXT_AddWidget(window, TXT_NewStrut(0, 1));
     UpdateInputBox();
 }
-
-#ifdef _WIN32
-#define CloseWindow __win32_CloseWindow
-#include <windows.h>
-#endif
-
-#ifdef _WIN32
-int CALLBACK WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
-{
-	return 0;
-}
-#endif
 
 int main(int argc, char *argv[])
 {

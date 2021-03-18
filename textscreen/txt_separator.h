@@ -1,4 +1,4 @@
-// Emacs style mode select   -*- C++ -*-
+// Emacs style mode select   -*- C++ -*- 
 //-----------------------------------------------------------------------------
 //
 // Copyright(C) 2006 Simon Howard
@@ -43,8 +43,8 @@ typedef struct txt_separator_s txt_separator_t;
 
 struct txt_separator_s
 {
-	txt_widget_t widget;
-	char* label;
+    txt_widget_t widget;
+    char *label;
 };
 
 extern txt_widget_class_t txt_separator_class;
@@ -57,6 +57,8 @@ extern txt_widget_class_t txt_separator_class;
  * @return              The new separator widget.
  */
 
-txt_separator_t* TXT_NewSeparator(char* label);
+txt_separator_t *TXT_NewSeparator(char *label);
 
-#endif							/* #ifndef TXT_SEPARATOR_H */
+#endif /* #ifndef TXT_SEPARATOR_H */
+
+

@@ -1,4 +1,4 @@
-// Emacs style mode select   -*- C++ -*-
+// Emacs style mode select   -*- C++ -*- 
 //-----------------------------------------------------------------------------
 //
 // Copyright(C) 2005,2006 Simon Howard
@@ -27,10 +27,10 @@
 #ifndef TXT_GUI_H
 #define TXT_GUI_H
 
-void TXT_DrawDesktopBackground(const char* title);
-void TXT_DrawWindowFrame(const char* title, int x, int y, int w, int h);
+void TXT_DrawDesktopBackground(const char *title);
+void TXT_DrawWindowFrame(const char *title, int x, int y, int w, int h);
 void TXT_DrawSeparator(int x, int y, int w);
-void TXT_DrawString(const char* s);
+void TXT_DrawString(const char *s);
 
 void TXT_DrawHorizScrollbar(int x, int y, int w, int cursor, int range);
 void TXT_DrawVertScrollbar(int x, int y, int h, int cursor, int range);
@@ -39,4 +39,5 @@ void TXT_InitClipArea(void);
 void TXT_PushClipArea(int x1, int x2, int y1, int y2);
 void TXT_PopClipArea(void);
 
-#endif							/* #ifndef TXT_GUI_H */
+#endif /* #ifndef TXT_GUI_H */
+
