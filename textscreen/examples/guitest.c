@@ -31,6 +31,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+
 #include "textscreen.h"
 
 enum 
@@ -235,6 +236,19 @@ void ScrollingMenu(void)
 
     TXT_AddWidget(window, TXT_NewScrollPane(0, 6, table));
 }
+
+
+#ifdef _WIN32
+#define CloseWindow __win32_CloseWindow
+#include <windows.h>
+#endif
+
+#ifdef _WIN32
+int CALLBACK WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
+{
+	return 0;
+}
+#endif
 
 int main(int argc, char *argv[])
 {

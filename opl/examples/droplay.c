@@ -197,6 +197,18 @@ void PlayFile(char *filename)
     fclose(timer_data.fstream);
 }
 
+#ifdef _WIN32
+#define CloseWindow __win32_CloseWindow
+#include <windows.h>
+#endif
+
+#ifdef _WIN32
+int CALLBACK WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
+{
+	return 0;
+}
+#endif
+
 int main(int argc, char *argv[])
 {
     if (argc < 2)

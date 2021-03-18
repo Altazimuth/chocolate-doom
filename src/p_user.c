@@ -1,4 +1,4 @@
-// Emacs style mode select   -*- C++ -*- 
+// Emacs style mode select   -*- C++ -*-
 //-----------------------------------------------------------------------------
 //
 // Copyright(C) 1993-1996 Id Software, Inc.
@@ -20,9 +20,9 @@
 // 02111-1307, USA.
 //
 // DESCRIPTION:
-//	Player related stuff.
-//	Bobbing POV/weapon, movement.
-//	Pending weapon.
+//  Player related stuff.
+//  Bobbing POV/weapon, movement.
+//  Pending weapon.
 //
 //-----------------------------------------------------------------------------
 
@@ -35,6 +35,7 @@
 #include "p_local.h"
 
 #include "doomstat.h"
+#include "m_argv.h"
 
 
 
@@ -47,25 +48,21 @@
 //
 
 // 16 pixels of bob
-#define MAXBOB	0x100000	
+#define MAXBOB	0x100000
 
-boolean		onground;
+boolean onground;
 
 
 //
 // P_Thrust
 // Moves the given origin along a given angle.
 //
-void
-P_Thrust
-( player_t*	player,
-  angle_t	angle,
-  fixed_t	move ) 
+void P_Thrust(player_t* player, angle_t angle, fixed_t move)
 {
-    angle >>= ANGLETOFINESHIFT;
-    
-    player->mo->momx += FixedMul(move,finecosine[angle]); 
-    player->mo->momy += FixedMul(move,finesine[angle]);
+	angle >>= ANGLETOFINESHIFT;
+	
+	player->mo->momx += FixedMul(move, finecosine[angle]);
+	player->mo->momy += FixedMul(move, finesine[angle]);
 }
 
 
@@ -75,70 +72,68 @@ P_Thrust
 // P_CalcHeight
 // Calculate the walking / running height adjustment
 //
-void P_CalcHeight (player_t* player) 
+void P_CalcHeight(player_t* player)
 {
-    int		angle;
-    fixed_t	bob;
-    
-    // Regular movement bobbing
-    // (needs to be calculated for gun swing
-    // even if not on ground)
-    // OPTIMIZE: tablify angle
-    // Note: a LUT allows for effects
-    //  like a ramp with low health.
-    player->bob =
-	FixedMul (player->mo->momx, player->mo->momx)
-	+ FixedMul (player->mo->momy,player->mo->momy);
-    
-    player->bob >>= 2;
-
-    if (player->bob>MAXBOB)
-	player->bob = MAXBOB;
-
-    if ((player->cheats & CF_NOMOMENTUM) || !onground)
-    {
-	player->viewz = player->mo->z + VIEWHEIGHT;
-
-	if (player->viewz > player->mo->ceilingz-4*FRACUNIT)
-	    player->viewz = player->mo->ceilingz-4*FRACUNIT;
-
-	player->viewz = player->mo->z + player->viewheight;
-	return;
-    }
+	int angle;
+	fixed_t bob;
+	
+	// Regular movement bobbing
+	// (needs to be calculated for gun swing
+	// even if not on ground)
+	// OPTIMIZE: tablify angle
+	// Note: a LUT allows for effects
+	//  like a ramp with low health.
+	player->bob = FixedMul(player->mo->momx, player->mo->momx) + FixedMul(player->mo->momy, player->mo->momy);
+	
+	player->bob >>= 2;
+	
+	if (player->bob > MAXBOB)
+		player->bob = MAXBOB;
 		
-    angle = (FINEANGLES/20*leveltime)&FINEMASK;
-    bob = FixedMul ( player->bob/2, finesine[angle]);
-
-    
-    // move viewheight
-    if (player->playerstate == PST_LIVE)
-    {
-	player->viewheight += player->deltaviewheight;
-
-	if (player->viewheight > VIEWHEIGHT)
+	if ((player->cheats & CF_NOMOMENTUM) || !onground)
 	{
-	    player->viewheight = VIEWHEIGHT;
-	    player->deltaviewheight = 0;
-	}
-
-	if (player->viewheight < VIEWHEIGHT/2)
-	{
-	    player->viewheight = VIEWHEIGHT/2;
-	    if (player->deltaviewheight <= 0)
-		player->deltaviewheight = 1;
+		player->viewz = player->mo->z + VIEWHEIGHT;
+		
+		if (player->viewz > player->mo->ceilingz - 4 * FRACUNIT)
+			player->viewz = player->mo->ceilingz - 4 * FRACUNIT;
+			
+		player->viewz = player->mo->z + player->viewheight;
+		return;
 	}
 	
-	if (player->deltaviewheight)	
+	angle = (FINEANGLES / 20 * leveltime) & FINEMASK;
+	bob = FixedMul(player->bob / 2, finesine[angle]);
+	
+	
+	// move viewheight
+	if (player->playerstate == PST_LIVE)
 	{
-	    player->deltaviewheight += FRACUNIT/4;
-	    if (!player->deltaviewheight)
-		player->deltaviewheight = 1;
+		player->viewheight += player->deltaviewheight;
+		
+		if (player->viewheight > VIEWHEIGHT)
+		{
+			player->viewheight = VIEWHEIGHT;
+			player->deltaviewheight = 0;
+		}
+		
+		if (player->viewheight < VIEWHEIGHT / 2)
+		{
+			player->viewheight = VIEWHEIGHT / 2;
+			if (player->deltaviewheight <= 0)
+				player->deltaviewheight = 1;
+		}
+		
+		if (player->deltaviewheight)
+		{
+			player->deltaviewheight += FRACUNIT / 4;
+			if (!player->deltaviewheight)
+				player->deltaviewheight = 1;
+		}
 	}
-    }
-    player->viewz = player->mo->z + player->viewheight + bob;
-
-    if (player->viewz > player->mo->ceilingz-4*FRACUNIT)
-	player->viewz = player->mo->ceilingz-4*FRACUNIT;
+	player->viewz = player->mo->z + player->viewheight + bob;
+	
+	if (player->viewz > player->mo->ceilingz - 4 * FRACUNIT)
+		player->viewz = player->mo->ceilingz - 4 * FRACUNIT;
 }
 
 
@@ -146,30 +141,29 @@ void P_CalcHeight (player_t* player)
 //
 // P_MovePlayer
 //
-void P_MovePlayer (player_t* player)
+void P_MovePlayer(player_t* player)
 {
-    ticcmd_t*		cmd;
+	ticcmd_t* cmd;
 	
-    cmd = &player->cmd;
+	cmd = &player->cmd;
 	
-    player->mo->angle += (cmd->angleturn<<16);
-
-    // Do not let the player control movement
-    //  if not onground.
-    onground = (player->mo->z <= player->mo->floorz);
+	player->mo->angle += (cmd->angleturn << 16);
 	
-    if (cmd->forwardmove && onground)
-	P_Thrust (player, player->mo->angle, cmd->forwardmove*2048);
-    
-    if (cmd->sidemove && onground)
-	P_Thrust (player, player->mo->angle-ANG90, cmd->sidemove*2048);
-
-    if ( (cmd->forwardmove || cmd->sidemove) 
-	 && player->mo->state == &states[S_PLAY] )
-    {
-	P_SetMobjState (player->mo, S_PLAY_RUN1);
-    }
-}	
+	// Do not let the player control movement
+	//  if not onground.
+	onground = (player->mo->z <= player->mo->floorz);
+	
+	if (cmd->forwardmove && onground)
+		P_Thrust(player, player->mo->angle, cmd->forwardmove * 2048);
+		
+	if (cmd->sidemove && onground)
+		P_Thrust(player, player->mo->angle - ANG90, cmd->sidemove * 2048);
+		
+	if ((cmd->forwardmove || cmd->sidemove) && player->mo->state == &states[S_PLAY])
+	{
+		P_SetMobjState(player->mo, S_PLAY_RUN1);
+	}
+}
 
 
 
@@ -180,53 +174,50 @@ void P_MovePlayer (player_t* player)
 //
 #define ANG5   	(ANG90/18)
 
-void P_DeathThink (player_t* player)
+void P_DeathThink(player_t* player)
 {
-    angle_t		angle;
-    angle_t		delta;
-
-    P_MovePsprites (player);
+	angle_t angle;
+	angle_t delta;
 	
-    // fall to the ground
-    if (player->viewheight > 6*FRACUNIT)
-	player->viewheight -= FRACUNIT;
-
-    if (player->viewheight < 6*FRACUNIT)
-	player->viewheight = 6*FRACUNIT;
-
-    player->deltaviewheight = 0;
-    onground = (player->mo->z <= player->mo->floorz);
-    P_CalcHeight (player);
+	P_MovePsprites(player);
 	
-    if (player->attacker && player->attacker != player->mo)
-    {
-	angle = R_PointToAngle2 (player->mo->x,
-				 player->mo->y,
-				 player->attacker->x,
-				 player->attacker->y);
+	// fall to the ground
+	if (player->viewheight > 6 * FRACUNIT)
+		player->viewheight -= FRACUNIT;
+		
+	if (player->viewheight < 6 * FRACUNIT)
+		player->viewheight = 6 * FRACUNIT;
+		
+	player->deltaviewheight = 0;
+	onground = (player->mo->z <= player->mo->floorz);
+	P_CalcHeight(player);
 	
-	delta = angle - player->mo->angle;
-	
-	if (delta < ANG5 || delta > (unsigned)-ANG5)
+	if (player->attacker && player->attacker != player->mo)
 	{
-	    // Looking at killer,
-	    //  so fade damage flash down.
-	    player->mo->angle = angle;
-
-	    if (player->damagecount)
-		player->damagecount--;
+		angle = R_PointToAngle2(player->mo->x, player->mo->y, player->attacker->x, player->attacker->y);
+		
+		delta = angle - player->mo->angle;
+		
+		if (delta < ANG5 || delta > (unsigned)-ANG5)
+		{
+			// Looking at killer,
+			//  so fade damage flash down.
+			player->mo->angle = angle;
+			
+			if (player->damagecount)
+				player->damagecount--;
+		}
+		else if (delta < ANG180)
+			player->mo->angle += ANG5;
+		else
+			player->mo->angle -= ANG5;
 	}
-	else if (delta < ANG180)
-	    player->mo->angle += ANG5;
-	else
-	    player->mo->angle -= ANG5;
-    }
-    else if (player->damagecount)
-	player->damagecount--;
-	
-
-    if (player->cmd.buttons & BT_USE)
-	player->playerstate = PST_REBORN;
+	else if (player->damagecount)
+		player->damagecount--;
+		
+		
+	if (player->cmd.buttons & BT_USE)
+		player->playerstate = PST_REBORN;
 }
 
 
@@ -234,154 +225,244 @@ void P_DeathThink (player_t* player)
 //
 // P_PlayerThink
 //
-void P_PlayerThink (player_t* player)
+void P_PlayerThink(player_t* player)
 {
-    ticcmd_t*		cmd;
-    weapontype_t	newweapon;
+	ticcmd_t* cmd;
+	weapontype_t newweapon;
 	
-    // fixme: do this in the cheat code
-    if (player->cheats & CF_NOCLIP)
-	player->mo->flags |= MF_NOCLIP;
-    else
-	player->mo->flags &= ~MF_NOCLIP;
-    
-    // chain saw run forward
-    cmd = &player->cmd;
-    if (player->mo->flags & MF_JUSTATTACKED)
-    {
-	cmd->angleturn = 0;
-	cmd->forwardmove = 0xc800/512;
-	cmd->sidemove = 0;
-	player->mo->flags &= ~MF_JUSTATTACKED;
-    }
+	int p;
+	int32_t BruteStart, BruteEnd, BruteGran, BruteStep, BruteStepOffset;
+	fixed_t bbxa, bbya, bbxb, bbyb;
+	const char* FileDAT;
+	const char* FilePPM;
+	const char* FileLOG;
+	
+	//// GhostlyDeath <May 19, 2012> -- Brute Force ////
+	if (M_CheckParm("-bruteforce"))
+	{
+		// Create player mo?
+		if (!players[0].mo)
+		{
+			players[0].mo = P_SpawnMobj(0, 0, 0, MT_PLAYER);
+			players[0].mo->player = &players[0];
+			P_CalcHeight(&players[0]);
+		}
+		
+		// Start and end
+		BruteStart = 0;
+		BruteEnd = numsectors;
+		if ((p = M_CheckParm("-brutestart")))
+			if (p < myargc - 1)
+				BruteStart = atoi(myargv[p + 1]);
+		if ((p = M_CheckParm("-brutestop")))
+			if (p < myargc - 1)
+				BruteEnd = atoi(myargv[p + 1]);
+		
+		// Bound check?
+		if (BruteEnd < 0)
+			BruteEnd = 0;
+		else if (BruteEnd > numsectors)
+			BruteEnd = numsectors;
+		
+		if (BruteStart < 0)
+			BruteStart = 0;
+		if (BruteStart >= BruteEnd)
+			BruteStart = BruteEnd - 1;
+		
+		// Precision
+		BruteGran = 0;
+		if ((p = M_CheckParm("-brutegran")))
+			if (p < myargc - 1)
+				BruteGran = atoi(myargv[p + 1]);
+		if (BruteGran < 0)
+			BruteGran = 0;
+		BruteGran <<= 16;
+		
+		// Output file
+		FileDAT = FilePPM = NULL;
+		if ((p = M_CheckParm("-brutedatfile")))
+			if (p < myargc - 1)
+				FileDAT = myargv[p + 1];
+		if ((p = M_CheckParm("-bruteppmfile")))
+			if (p < myargc - 1)
+				FilePPM = myargv[p + 1];
+		if ((p = M_CheckParm("-brutelogfile")))
+			if (p < myargc - 1)
+				FileLOG = myargv[p + 1];
+		
+		// Stepping
+		BruteStep = 1;
+		BruteStepOffset = 0;
+		if ((p = M_CheckParm("-brutestep")))
+			if (p < myargc - 1)
+				BruteStep = atoi(myargv[p + 1]);
+		if ((p = M_CheckParm("-brutestepoffset")))
+			if (p < myargc - 1)
+				BruteStepOffset = atoi(myargv[p + 1]);
+		
+		if (BruteStepOffset < 0)
+			BruteStepOffset = 0;
+		if (BruteStep < 1)
+			BruteStep = 1;
 			
-	
-    if (player->playerstate == PST_DEAD)
-    {
-	P_DeathThink (player);
-	return;
-    }
-    
-    // Move around.
-    // Reactiontime is used to prevent movement
-    //  for a bit after a teleport.
-    if (player->mo->reactiontime)
-	player->mo->reactiontime--;
-    else
-	P_MovePlayer (player);
-    
-    P_CalcHeight (player);
-
-    if (player->mo->subsector->sector->special)
-	P_PlayerInSpecialSector (player);
-    
-    // Check for weapon change.
-
-    // A special event has no other buttons.
-    if (cmd->buttons & BT_SPECIAL)
-	cmd->buttons = 0;			
-		
-    if (cmd->buttons & BT_CHANGE)
-    {
-	// The actual changing of the weapon is done
-	//  when the weapon psprite can do it
-	//  (read: not in the middle of an attack).
-	newweapon = (cmd->buttons&BT_WEAPONMASK)>>BT_WEAPONSHIFT;
-	
-	if (newweapon == wp_fist
-	    && player->weaponowned[wp_chainsaw]
-	    && !(player->readyweapon == wp_chainsaw
-		 && player->powers[pw_strength]))
-	{
-	    newweapon = wp_chainsaw;
-	}
-	
-	if ( (gamemode == commercial)
-	    && newweapon == wp_shotgun 
-	    && player->weaponowned[wp_supershotgun]
-	    && player->readyweapon != wp_supershotgun)
-	{
-	    newweapon = wp_supershotgun;
-	}
-	
-
-	if (player->weaponowned[newweapon]
-	    && newweapon != player->readyweapon)
-	{
-	    // Do not go to plasma or BFG in shareware,
-	    //  even if cheated.
-	    if ((newweapon != wp_plasma
-		 && newweapon != wp_bfg)
-		|| (gamemode != shareware) )
-	    {
-		player->pendingweapon = newweapon;
-	    }
-	}
-    }
-    
-    // check for use
-    if (cmd->buttons & BT_USE)
-    {
-	if (!player->usedown)
-	{
-	    P_UseLines (player);
-	    player->usedown = true;
-	}
-    }
-    else
-	player->usedown = false;
-    
-    // cycle psprites
-    P_MovePsprites (player);
-    
-    // Counters, time dependend power ups.
-
-    // Strength counts up to diminish fade.
-    if (player->powers[pw_strength])
-	player->powers[pw_strength]++;	
-		
-    if (player->powers[pw_invulnerability])
-	player->powers[pw_invulnerability]--;
-
-    if (player->powers[pw_invisibility])
-	if (! --player->powers[pw_invisibility] )
-	    player->mo->flags &= ~MF_SHADOW;
+		// Bounding box
+		bbxa = bbya = bbxb = bbyb = 0;
+		if ((p = M_CheckParm("-brutebounds")))
+		{
+			if (p + 1 < myargc)
+				bbxa = atoi(myargv[p + 1]);
+			if (p + 2 < myargc)
+				bbya = atoi(myargv[p + 2]);
+			if (p + 3 < myargc)
+				bbxb = atoi(myargv[p + 3]);
+			if (p + 4 < myargc)
+				bbyb = atoi(myargv[p + 4]);
+		}
 			
-    if (player->powers[pw_infrared])
-	player->powers[pw_infrared]--;
+		// Call brute force
+		R_BruteForce(
+				BruteStart, BruteEnd,
+				BruteGran,
+				FileDAT, FilePPM, FileLOG,
+				BruteStep, BruteStepOffset,
+				bbxa, bbya, bbxb, bbyb
+			);
 		
-    if (player->powers[pw_ironfeet])
-	player->powers[pw_ironfeet]--;
-		
-    if (player->damagecount)
-	player->damagecount--;
-		
-    if (player->bonuscount)
-	player->bonuscount--;
-
-    
-    // Handling colormaps.
-    if (player->powers[pw_invulnerability])
-    {
-	if (player->powers[pw_invulnerability] > 4*32
-	    || (player->powers[pw_invulnerability]&8) )
-	    player->fixedcolormap = INVERSECOLORMAP;
+		// I_Error() out
+		//I_Error("Finished Brute Force.");
+		exit(0);
+		return;
+	}
+	////////////////////////////////////////////////////
+	
+	// fixme: do this in the cheat code
+	if (player->cheats & CF_NOCLIP)
+		player->mo->flags |= MF_NOCLIP;
 	else
-	    player->fixedcolormap = 0;
-    }
-    else if (player->powers[pw_infrared])	
-    {
-	if (player->powers[pw_infrared] > 4*32
-	    || (player->powers[pw_infrared]&8) )
+		player->mo->flags &= ~MF_NOCLIP;
+		
+	// chain saw run forward
+	cmd = &player->cmd;
+	if (player->mo->flags & MF_JUSTATTACKED)
 	{
-	    // almost full bright
-	    player->fixedcolormap = 1;
+		cmd->angleturn = 0;
+		cmd->forwardmove = 0xc800 / 512;
+		cmd->sidemove = 0;
+		player->mo->flags &= ~MF_JUSTATTACKED;
+	}
+	
+	
+	if (player->playerstate == PST_DEAD)
+	{
+		P_DeathThink(player);
+		return;
+	}
+	// Move around.
+	// Reactiontime is used to prevent movement
+	//  for a bit after a teleport.
+	if (player->mo->reactiontime)
+		player->mo->reactiontime--;
+	else
+		P_MovePlayer(player);
+		
+	P_CalcHeight(player);
+	
+	if (player->mo->subsector->sector->special)
+		P_PlayerInSpecialSector(player);
+		
+	// Check for weapon change.
+	
+	// A special event has no other buttons.
+	if (cmd->buttons & BT_SPECIAL)
+		cmd->buttons = 0;
+		
+	if (cmd->buttons & BT_CHANGE)
+	{
+		// The actual changing of the weapon is done
+		//  when the weapon psprite can do it
+		//  (read: not in the middle of an attack).
+		newweapon = (cmd->buttons & BT_WEAPONMASK) >> BT_WEAPONSHIFT;
+		
+		if (newweapon == wp_fist && player->weaponowned[wp_chainsaw] && !(player->readyweapon == wp_chainsaw && player->powers[pw_strength]))
+		{
+			newweapon = wp_chainsaw;
+		}
+		
+		if ((gamemode == commercial) && newweapon == wp_shotgun && player->weaponowned[wp_supershotgun] && player->readyweapon != wp_supershotgun)
+		{
+			newweapon = wp_supershotgun;
+		}
+		
+		
+		if (player->weaponowned[newweapon] && newweapon != player->readyweapon)
+		{
+			// Do not go to plasma or BFG in shareware,
+			//  even if cheated.
+			if ((newweapon != wp_plasma && newweapon != wp_bfg) || (gamemode != shareware))
+			{
+				player->pendingweapon = newweapon;
+			}
+		}
+	}
+	// check for use
+	if (cmd->buttons & BT_USE)
+	{
+		if (!player->usedown)
+		{
+			P_UseLines(player);
+			player->usedown = true;
+		}
 	}
 	else
-	    player->fixedcolormap = 0;
-    }
-    else
-	player->fixedcolormap = 0;
+		player->usedown = false;
+		
+	// cycle psprites
+	P_MovePsprites(player);
+	
+	// Counters, time dependend power ups.
+	
+	// Strength counts up to diminish fade.
+	if (player->powers[pw_strength])
+		player->powers[pw_strength]++;
+		
+	if (player->powers[pw_invulnerability])
+		player->powers[pw_invulnerability]--;
+		
+	if (player->powers[pw_invisibility])
+		if (!--player->powers[pw_invisibility])
+			player->mo->flags &= ~MF_SHADOW;
+			
+	if (player->powers[pw_infrared])
+		player->powers[pw_infrared]--;
+		
+	if (player->powers[pw_ironfeet])
+		player->powers[pw_ironfeet]--;
+		
+	if (player->damagecount)
+		player->damagecount--;
+		
+	if (player->bonuscount)
+		player->bonuscount--;
+		
+		
+	// Handling colormaps.
+	if (player->powers[pw_invulnerability])
+	{
+		if (player->powers[pw_invulnerability] > 4 * 32 || (player->powers[pw_invulnerability] & 8))
+			player->fixedcolormap = INVERSECOLORMAP;
+		else
+			player->fixedcolormap = 0;
+	}
+	else if (player->powers[pw_infrared])
+	{
+		if (player->powers[pw_infrared] > 4 * 32 || (player->powers[pw_infrared] & 8))
+		{
+			// almost full bright
+			player->fixedcolormap = 1;
+		}
+		else
+			player->fixedcolormap = 0;
+	}
+	else
+		player->fixedcolormap = 0;
 }
-
-

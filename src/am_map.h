@@ -1,4 +1,4 @@
-// Emacs style mode select   -*- C++ -*- 
+// Emacs style mode select   -*- C++ -*-
 //-----------------------------------------------------------------------------
 //
 // Copyright(C) 1993-1996 Id Software, Inc.
@@ -37,18 +37,20 @@
 
 
 // Called by main loop.
-boolean AM_Responder (event_t* ev);
+boolean AM_Responder(event_t* ev);
 
 // Called by main loop.
-void AM_Ticker (void);
+void AM_Ticker(void);
 
 // Called by main loop,
 // called instead of view drawer if automap active.
-void AM_Drawer (void);
+void AM_Drawer(void);
+
+void AM_Start(void);
 
 // Called to force the automap to quit
 // if the level is completed while it is up.
-void AM_Stop (void);
+void AM_Stop(void);
 
 
 extern cheatseq_t cheat_amap;

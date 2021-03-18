@@ -1,4 +1,4 @@
-// Emacs style mode select   -*- C++ -*- 
+// Emacs style mode select   -*- C++ -*-
 //-----------------------------------------------------------------------------
 //
 // Copyright(C) 1993-1996 Id Software, Inc.
@@ -20,7 +20,7 @@
 // 02111-1307, USA.
 //
 // DESCRIPTION:
-//	Fixed point arithemtics, implementation.
+//  Fixed point arithemtics, implementation.
 //
 //-----------------------------------------------------------------------------
 
@@ -39,9 +39,12 @@
 
 typedef int fixed_t;
 
-fixed_t FixedMul	(fixed_t a, fixed_t b);
-fixed_t FixedDiv	(fixed_t a, fixed_t b);
+fixed_t FixedMul(fixed_t a, fixed_t b);
+fixed_t FixedDiv(fixed_t a, fixed_t b);
 
+#define FIXED_TO_FLOAT(x) (((float)(x)) / 65536.0)
+#define FLOAT_TO_FIXED(x) (((fixed_t)(((float)(x)) * 65536.0)))
 
 
 #endif
+

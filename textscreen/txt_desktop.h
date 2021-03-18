@@ -1,4 +1,4 @@
-// Emacs style mode select   -*- C++ -*- 
+// Emacs style mode select   -*- C++ -*-
 //-----------------------------------------------------------------------------
 //
 // Copyright(C) 2006 Simon Howard
@@ -30,12 +30,12 @@
 
 #include "txt_window.h"
 
-void TXT_AddDesktopWindow(txt_window_t *win);
-void TXT_RemoveDesktopWindow(txt_window_t *win);
+void TXT_AddDesktopWindow(txt_window_t* win);
+void TXT_RemoveDesktopWindow(txt_window_t* win);
 void TXT_DrawDesktop(void);
 void TXT_DispatchEvents(void);
-void TXT_DrawWindow(txt_window_t *window, int selected);
-void TXT_WindowKeyPress(txt_window_t *window, int c);
+void TXT_DrawWindow(txt_window_t* window, int selected);
+void TXT_WindowKeyPress(txt_window_t* window, int c);
 
 /**
  * Set the title displayed at the top of the screen.
@@ -43,7 +43,7 @@ void TXT_WindowKeyPress(txt_window_t *window, int c);
  * @param title         The title to display.
  */
 
-void TXT_SetDesktopTitle(char *title);
+void TXT_SetDesktopTitle(char* title);
 
 /**
  * Exit the currently-running main loop and return from the
@@ -63,6 +63,4 @@ void TXT_ExitMainLoop(void);
 
 void TXT_GUIMainLoop(void);
 
-#endif /* #ifndef TXT_DESKTOP_H */
-
-
+#endif							/* #ifndef TXT_DESKTOP_H */

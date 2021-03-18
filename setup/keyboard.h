@@ -1,4 +1,4 @@
-// Emacs style mode select   -*- C++ -*- 
+// Emacs style mode select   -*- C++ -*-
 //-----------------------------------------------------------------------------
 //
 // Copyright(C) 2006 Simon Howard
@@ -19,8 +19,8 @@
 // 02111-1307, USA.
 //
 
-#ifndef SETUP_KEYBOARD_H 
-#define SETUP_KEYBOARD_H 
+#ifndef SETUP_KEYBOARD_H
+#define SETUP_KEYBOARD_H
 
 extern int key_left;
 extern int key_right;
@@ -98,10 +98,11 @@ extern int key_weapon8;
 extern int key_prevweapon;
 extern int key_nextweapon;
 
+extern int key_vilebomb;
+
 extern int key_message_refresh;
 extern int key_demo_quit;
 
 void ConfigKeyboard(void);
 
-#endif /* #ifndef SETUP_KEYBOARD_H */
-
+#endif							/* #ifndef SETUP_KEYBOARD_H */

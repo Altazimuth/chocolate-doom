@@ -1,0 +1,91 @@
+Chocorenderlimits by GhostlyDeath <ghostlydeath@gmail.com>
+
+For those determined vanilla mappers who believe you don't need Boom or anything else.
+
+This modifcation shows you how bad of a job you did making a vanilla compatible
+map that will cause anguish and pain amongst your peers getting visplane overflows.
+Where you frustrate and have no clue where the hell it exactly overflows, you find
+it very very difficult.
+
+Well, this makes life easier, which means less gray hair later on in life.
+
+Note that since CRL is based off the venerably ancient 1.5.0, I made new settings to be slapped in chocorenderlimits.cfg for brevity. Please remember that chocolate-doom.cfg is still read, since unlike many I prefer compatibility and you should too. So chocolate-doom.cfg is read then chocorenderlimits.cfg is read and only chocorenderlimits.cfg is saved.
+
+Cool key binds
+
+F1 = Screenshot
+F2 = Clear max visplane mark
+F3 = Warp to max visplane mark
+F4 = Send something to some file
+F5 = Low detail (untouched)
+F6 = Change visplane draw mode
+		0 = Don't draw markers (colors)
+		1 = Standard Colorize
+		2 = Overdraw colors (draws over anything including lines and whatnot)
+		3 = Border Colors (draw pixels that are adjacent to another visplane)
+		
+F8 = Sneak mode (capture all drawables), then you can move around
+	Works OK until you get to the floors
+F9 = Toggle display
+		0 = Standard (Full)
+		1 = Overflows Only
+		2 = Nothing (esselfortium's "playtest" mode)
+F10 = Toggle the seizure causing purple flash of HOM.
+
+You can cheat in nightmare and in multiplayer (this is map testing)
+
+F4 makes "crl-log.txt" containing something to the lines of:
+
+The code is horribly written, it is only for test purposes not an actual game.
+
+### BRUTE FORCING ###
+
+Accessing: Requires -warp
+
+-bruteforce							Commence brute force
+-brutestart <n>						Sector to start brute forcing at
+-brutestop <n>						Sector to stop brute forcing at
+-brutegran <n>						Granularity of brute force jumps (default 32)
+-brutebounds <x1> <y1> <x2> <y2>	Limit checking to these bounds
+-brutedatfile <path>				File to write data to (passed directly to fopen())
+-bruteppmfile <path>				File to write image to (passed directly to fopen())
+-brutelogfile <path>				File to write log to (passed directly to fopen())
+
+The following two stepping options are geared more twords scripts that can execute
+in parallel and combine the output data.
+
+-brutestep <n>						Move multiple gran units, default: 1
+-brutestepoffset <n>				Start at additional gran units, default: 0
+
+Two files are outputted:
+	> crlbf_rw.dat: The raw brute force data contained
+	> crlbf_im.ppm: A pictire of the data
+
+The format of the raw data:
+
+u32		Width
+u32		Height
+fixed	Map Origin X
+fixed	Map Origin Y
+fixed	Granularity
+
+Then for each unit in the map grid
+
+i16		X Position
+i16		Y Position
+u8		Location is valid (checked), if non-zero the following 4 fields exist
+	u32		Max visplanes here
+	u32		Max drawsegs here
+	u32		Max openings here
+	u32		Max sprites here
+
+[05/19 05:54:04 PM] < GhostlyDeath> Map Origin X and Y is determined by the following
+[05/19 05:54:20 PM] < GhostlyDeath> The lowest x/y pos of vertexes, in Doom coords (non visual)
+[05/19 05:54:40 PM] < GhostlyDeath> So (5,10) and (10,5) would mean the origin is (5,5)
+[05/19 05:55:02 PM] < GhostlyDeath> The width and height is the size of the map / gran
+[05/19 05:55:49 PM] < GhostlyDeath> So a 3200 size map, with 32 gran, would be 100
+[05/19 05:56:23 PM] < GhostlyDeath> The first uint8_t, which is valid location
+[05/19 05:56:32 PM] < GhostlyDeath> Is just an indicator if the position was checked
+[05/19 05:56:41 PM] < GhostlyDeath> CRL ignores areas that are outside subsector bounds and such
+
+

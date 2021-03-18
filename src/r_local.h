@@ -1,4 +1,4 @@
-// Emacs style mode select   -*- C++ -*- 
+// Emacs style mode select   -*- C++ -*-
 //-----------------------------------------------------------------------------
 //
 // Copyright(C) 1993-1996 Id Software, Inc.
@@ -20,8 +20,8 @@
 // 02111-1307, USA.
 //
 // DESCRIPTION:
-//	Refresh (R_*) module, global header.
-//	All the rendering/drawing stuff is here.
+//  Refresh (R_*) module, global header.
+//  All the rendering/drawing stuff is here.
 //
 //-----------------------------------------------------------------------------
 
@@ -49,5 +49,24 @@
 #include "r_data.h"
 #include "r_things.h"
 #include "r_draw.h"
+#include "p_spec.h"
 
-#endif		// __R_LOCAL__
+extern int g_crlsneakmode;
+
+#define NORMMAXVISPLANES	128		// Normal visplane limit in doom
+#define MAXVISPLANES		1024	// Chocorenderlimits visplane max
+
+extern visplane_t visplanes[MAXVISPLANES];
+extern visplane_t* lastvisplane;
+
+#define MAXOPENINGS	SCREENWIDTH*64
+extern short openings[MAXOPENINGS];
+extern short* lastopening;
+extern drawseg_t drawsegs[MAXDRAWSEGS];
+extern drawseg_t* ds_p;
+extern int fuckdrawing;
+extern plat_t* activeplats[MAXPLATS];
+extern int numplats;
+extern plat_t** lastplat;
+
+#endif							// __R_LOCAL__
